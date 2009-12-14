@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright 2009 The MITRE Corporation 
+  
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+  You may obtain a copy of the License at 
+  
+  http://www.apache.org/licenses/LICENSE-2.0 
+  
+  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific 
+  language governing permissions and limitations under the License. 
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  elementFormDefault="qualified" 
+  targetNamespace="http://projecthdata.org/hdata/schemas/2009/06/insurance_provider" 
+  xmlns:i="http://projecthdata.org/hdata/schemas/2009/06/insurance_provider" 
+  xmlns:it="http://projecthdata.org/hdata/schemas/2009/06/insurance_provider_types" 
+  xmlns:core="http://projecthdata.org/hdata/schemas/2009/06/core">
+  
+  <xs:import namespace="http://projecthdata.org/hdata/schemas/2009/06/core" schemaLocation="core_data_types.xsd"/>
+  <xs:import namespace="http://projecthdata.org/hdata/schemas/2009/06/insurance_provider_types" schemaLocation="insurance_provider_types.xsd"></xs:import>
+  <xs:element name="insuranceProvider">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="PolicyActivity" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="groupNumber" type="core:instanceIdentifier"/>
+              <xs:element name="healthInsuranceType" type="it:healthInsuranceTypeCode"/>
+              <xs:element name="performer" type="it:payer"/>
+              <xs:element name="participant" type="it:memberOrSubscriberInformation"/>
+              <xs:element name="entryRelationship" type="it:healthPlan" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="sequenceNumber" type="xs:integer"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="informant" type="core:informant"/>
+        <xs:element name="text" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

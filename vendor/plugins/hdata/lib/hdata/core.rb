@@ -129,7 +129,7 @@ module Hdata
     #   
     module MaritalStatus
       def to_hdata(xml)
-             xml.maritalStatusCode("code" => code, 
+             xml.maritalStatus("code" => code, 
                                    "displayName" => name, 
                                    "codeSystemName" => "HL7 MaritalStatusCode", 
                                    "codeSystem" => "2.16.840.1.113883.5.2")
@@ -161,6 +161,12 @@ module Hdata
              xml.country(iso_country.code) if iso_country.present?
            end
        end
+       
+       
+       def self.validate_hdata(xml)
+         
+       end
+       
     end
     
 
@@ -201,8 +207,8 @@ module Hdata
    module Gender
      
      def to_hdata(xml)
-        xml.gender("code" => gender.code,
-                  "displayName" => gender.name, 
+        xml.gender("code" => code,
+                  "displayName" => name, 
                   "codeSystemName" => "HL7 AdministrativeGenderCodes",
                   "codeSystem" => "2.16.840.1.113883.5.1") do
           xml.originalText("AdministrativeGender codes are: M (Male), F (Female) or UN (Undifferentiated).")
@@ -250,6 +256,13 @@ module Hdata
    #       </xs:complexContent>
    #     </xs:complexType>
      module Race
+      HDATA_RACE_CODES = {"1004-1"=> "American Indian or Alaska Native" , 
+                          "2028-9"=>"Asian",
+                          "2058-6"=>"Black or African American",
+                          "2076-8"=>"Native Hawaiian or Other Pacific Islander",
+                          "2106-3"=>"White",
+                          "2132-1"=>"Other Race"} 
+                          
      def to_hdata(xml)
      xml.race("code" => code, 
                   "displayName" => name, 
