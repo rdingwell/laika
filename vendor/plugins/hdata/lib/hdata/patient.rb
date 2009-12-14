@@ -46,36 +46,30 @@ module Hdata
       xml.instruct! :xml, :version => '1.0'
       xml.patient(:xmlns => "http://projecthdata.org/hdata/schemas/2009/06/patient_information") do
         # the patient model in laika does not have a first and last name field for a patient, just a name field
+       
         xml.name do
           xml.given(name)
         end
       
 
-        addresses.each do |addr|
-          addr.to_hdata(xml)
-        end
-        
-        telecom.each do |tele|
-          tele.to_hdata(xml)
-        end
+        address.try(:to_hdata, xml)
+        telecom.try(:to_hdata, xml)
         
         
         xml.id(patient.id)
-        registration_information.gender.to_hdata(xml)
+        registration_information.gender.try(:to_hdata, xml)
         languages.each do |lang|
           lang.to_hdata(xml)
         end
         xml.birthTime(registration_information.date_of_birth)
-        registration_information.martial_status.to_hdata(xml)
-        registration_information.race.to_hdata(xml)
+        registration_information.martial_status.try(:to_hdata,xml)
+        registration_information.race.try(:to_hdata,xml)
         
          # do the gaurdian stuff here non gaurdian is placed elsewhere
-          if support &&
-             support.contact_type &&
-             support.contact_type.code == "GUARD"
-             support.to_hdata(xml)
+          if support && support.contact_type.try(:code) == "GUARD"
+             support.to_hdata(xml, :guardian)
           end
-        xml.gaurdian
+        
         # xml.birthPlace laika does not have birthPlace so it's a no go
       end
     
