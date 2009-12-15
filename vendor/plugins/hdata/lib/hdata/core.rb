@@ -1,7 +1,7 @@
 # Hdata
 module Hdata
   module Core
-    
+    NAMESPACE = "http://projecthdata.org/hdata/schemas/2009/06/core"
     
     # <xs:complexType name="telecom">
     #     <xs:attribute name="value" use="required"/>
@@ -33,24 +33,24 @@ module Hdata
     
     module Telecom
      
-      def to_hdata(xml)
+      def to_hdata(xml,tag="telecom")
         if home_phone && home_phone.size > 0
-          xml.telecom("type"=>"phone-landline","use" => "home", "value" =>  home_phone)
+          xml.tag!(tag, "type"=>"phone-landline","use" => "home", "value" =>  home_phone)
         end
         if work_phone && work_phone.size > 0
-         xml.telecom("type"=>"phone-landline","use" => "work", "value" =>  work_phone)
+         xml.tag!(tag, "type"=>"phone-landline","use" => "work", "value" =>  work_phone)
         end
         if mobile_phone && mobile_phone.size > 0
-          xml.telecom("type"=>"phone-cell","use" => "other", "value" => mobile_phone)
+          xml.tag!(tag, "type"=>"phone-cell","use" => "other", "value" => mobile_phone)
         end
         if vacation_home_phone && vacation_home_phone.size > 0
-          xml.telecom("type"=>"phone-landline","use" => "other", "value" =>  vacation_home_phone)
+          xml.tag!(tag, "type"=>"phone-landline","use" => "other", "value" =>  vacation_home_phone)
         end
         if email && email.size > 0
-          xml.telecom("type"=>"email","use"=>"other" ,"value" =>  email)
+          xml.tag!(tag, "type"=>"email","use"=>"other" ,"value" =>  email)
         end
         if url && url.size > 0
-          xml.telecom("type"=>"other","use"=>"other","value" => url)
+          xml.tag!(tag, "type"=>"other","use"=>"other","value" => url)
         end
       end
     end
@@ -128,8 +128,8 @@ module Hdata
     #     </xs:complexType>
     #   
     module MaritalStatus
-      def to_hdata(xml)
-             xml.maritalStatus("code" => code, 
+      def to_hdata(xml,tag="matritalStatus")
+             xml.tag!(tag,"code" => code, 
                                    "displayName" => name, 
                                    "codeSystemName" => "HL7 MaritalStatusCode", 
                                    "codeSystem" => "2.16.840.1.113883.5.2")
@@ -153,12 +153,12 @@ module Hdata
            #as an address is a complex type it is assumed that the builder will be passed in and the 
            #correct wrapping element will have been created already
            xml.tag!(tag) do
-             xml.streetAddress(street_address_line_one) if street_address_line_one.present?
-             xml.streetAddress(street_address_line_two) if street_address_line_two.present?
-             xml.city(city) if city.present?
-             xml.stateOrProvince(state) if state.present?
-             xml.zip(postal_code) if postal_code.present?
-             xml.country(iso_country.code) if iso_country.present?
+             xml.tag!("core:streetAddress", street_address_line_one) if street_address_line_one.present?
+             xml.tag!("core:streetAddress", street_address_line_two) if street_address_line_two.present?
+             xml.tag!("core:city",city) if city.present?
+             xml.tag!("core:stateOrProvince", state) if state.present?
+             xml.tag!("core:zip", postal_code) if postal_code.present?
+             xml.tag!("core:country", iso_country.code) if iso_country.present?
            end
        end
        
@@ -206,13 +206,11 @@ module Hdata
    #    </xs:complexType>
    module Gender
      
-     def to_hdata(xml)
-        xml.gender("code" => code,
+     def to_hdata(xml,tag="gender")
+        xml.tag!(tag,"code" => code,
                   "displayName" => name, 
-                  "codeSystemName" => "HL7 AdministrativeGenderCodes",
-                  "codeSystem" => "2.16.840.1.113883.5.1") do
-          xml.originalText("AdministrativeGender codes are: M (Male), F (Female) or UN (Undifferentiated).")
-        end
+                  "codeSystemName" => "HL7 AdministrativeGenderCode",
+                  "codeSystem" => "2.16.840.1.113883.5.1")
      end
      
    end
@@ -263,8 +261,8 @@ module Hdata
                           "2106-3"=>"White",
                           "2132-1"=>"Other Race"} 
                           
-     def to_hdata(xml)
-     xml.race("code" => code, 
+     def to_hdata(xml,tag="race")
+     xml.tag!(tag, "code" => code, 
                   "displayName" => name, 
                   "codeSystemName" => "CDC Race and Ethnicity", 
                   "codeSystem" => "2.16.840.1.113883.6.238")
@@ -283,19 +281,19 @@ module Hdata
      def to_hdata(xml,tag="name")
        xml.tag!(tag) do
          if name_prefix.present?
-           xml.title(name_prefix)
+           xml.tag!("core:title", name_prefix)
          end
          if first_name.present?
-           xml.given(first_name)
+           xml.tag!("core:given",first_name)
          end
          if middle_name.present?
-           xml.given(middle_name)
+           xml.tag!("core:given",middle_name)
          end
          if last_name.present?
-           xml.lastname(last_name)
+           xml.tag!("core:lastname",last_name)
          end
          if name_suffix.present?
-           xml.suffix(name_suffix)
+           xml.tag!("core:suffix",name_suffix)
          end
        end
      end
@@ -303,9 +301,9 @@ module Hdata
    
    module Person   
     def self.to_hdata(person,xml)
-      person.person_name.try(:to_hdata, xml)
-      person.address.try(:to_hdata, xml)
-      person.telecom.try(:to_hdata, xml)
+      person.person_name.try(:to_hdata, xml,"core:name")
+      person.address.try(:to_hdata, xml,"core:address")
+      person.telecom.try(:to_hdata, xml,"core:telecom")
     end
   end
 end

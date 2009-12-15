@@ -46,7 +46,8 @@ module Hdata
     # </xs:schema>
     def to_hdata(xml)
       xml.instruct! :xml, :version => '1.0'
-      xml.patient(:xmlns => "http://projecthdata.org/hdata/schemas/2009/06/patient_information") do
+      xml.patient(:xmlns => "http://projecthdata.org/hdata/schemas/2009/06/patient_information",
+                  "xmlns:core" => Hdata::Core::NAMESPACE) do
         # the patient model in laika does not have a first and last name field for a patient, just a name field
        
         if registration_information.present?
@@ -64,7 +65,7 @@ module Hdata
           lang.to_hdata(xml)
         end
         if registration_information.present?
-          xml.birthtime(registration_information.date_of_birth) 
+          xml.birthtime(registration_information.date_of_birth.to_utc) 
           registration_information.marital_status.try(:to_hdata,xml) 
           registration_information.race.try(:to_hdata,xml) 
         end

@@ -20,6 +20,7 @@ def assert_recognition(method, path, options)
   assert_equal options, result
 end
 
+
 def assert_xml_match(xml,path,value,namespaces={},bind_variables = {},format= :small )
   error = XmlHelper.match_value(xml,path,value,namespaces,bind_variables,format)
   puts error if error
