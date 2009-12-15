@@ -35,19 +35,19 @@ module Hdata
      
       def to_hdata(xml)
         if home_phone && home_phone.size > 0
-          xml.telecom("type"=>"phone-landline","use" => "home", "value" => 'tel:' + home_phone)
+          xml.telecom("type"=>"phone-landline","use" => "home", "value" =>  home_phone)
         end
         if work_phone && work_phone.size > 0
-         xml.telecom("type"=>"phone-landline","use" => "work", "value" => 'tel:' + work_phone)
+         xml.telecom("type"=>"phone-landline","use" => "work", "value" =>  work_phone)
         end
         if mobile_phone && mobile_phone.size > 0
-          xml.telecom("type"=>"phone-cell","use" => "other", "value" => 'tel:' + mobile_phone)
+          xml.telecom("type"=>"phone-cell","use" => "other", "value" => mobile_phone)
         end
         if vacation_home_phone && vacation_home_phone.size > 0
-          xml.telecom("type"=>"phone-landline","use" => "other", "value" => 'tel:' + vacation_home_phone)
+          xml.telecom("type"=>"phone-landline","use" => "other", "value" =>  vacation_home_phone)
         end
         if email && email.size > 0
-          xml.telecom("type"=>"email","use"=>"other" ,"value" => "mailto:" + email)
+          xml.telecom("type"=>"email","use"=>"other" ,"value" =>  email)
         end
         if url && url.size > 0
           xml.telecom("type"=>"other","use"=>"other","value" => url)
@@ -70,7 +70,7 @@ module Hdata
     module Language
          
       def to_hdata(xml, tag="language")
-        xml.tag!(tag, "code" => iso_language.code + "-" + iso_country.code,"codeSystem"=>"NA", "codeSystemName"=>"ISO Language Code - SO Country Code")       
+        xml.tag!(tag, "code" => iso_language.code + "-" + iso_country.code,"codeSystem"=>"NA", "codeSystemName"=>"NA")       
       end
       
     end
@@ -303,9 +303,9 @@ module Hdata
    
    module Person   
     def self.to_hdata(person,xml)
-      person_name.try(:to_hdata, xml)
-      address.try(:to_hdata, xml)
-      telecom.try(:to_hdata, xml)
+      person.person_name.try(:to_hdata, xml)
+      person.address.try(:to_hdata, xml)
+      person.telecom.try(:to_hdata, xml)
     end
   end
 end

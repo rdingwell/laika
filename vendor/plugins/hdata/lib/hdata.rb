@@ -10,7 +10,7 @@ module Hdata
     Gender.send :include, Hdata::Core::Gender
     PersonName.send :include, Hdata::Core::PersonName
     Race.send :include, Hdata::Core::Race
-    
+    Patient.send :include, Hdata::Translation::Patient
   end
   
 end
