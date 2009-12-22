@@ -128,7 +128,7 @@ module Hdata
     #     </xs:complexType>
     #   
     module MaritalStatus
-      def to_hdata(xml,tag="matritalStatus")
+      def to_hdata(xml,tag="maritalStatus")
              xml.tag!(tag,"code" => code, 
                                    "displayName" => name, 
                                    "codeSystemName" => "HL7 MaritalStatusCode", 

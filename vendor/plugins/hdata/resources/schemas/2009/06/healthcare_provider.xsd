@@ -24,35 +24,29 @@
       
       This section is used to describe a patients healthcare provider.
       
-      patientId element is the id of the patient in the providers organization.
-     
-      The dateRange element is used to define the date range the provider supplied service
-     
-     The role element is a codedValue used to define the role the provider played in the treatment of the patient.
-     
-     The type element is a codedValue used to define the type of provider , such as PCP, Physical Therapy ... 
-     
-     Both the role and type elements do not currently constrain the codedValue attributes to any particular code system. At the very least
-     however free text descriptions of each must be provided as the value of each element.
-     
-     The provider itself is defined as either a person or an organization element. Documentation of each is contained in the hData core.xsd schema
-     file.
-     
-     This section also contains optional informationSource and description elements defined and documented in the core.xsd schema file.
+      Element names map to HITSP Data Element Names in the HITSP C83, with the expcetion informationSource and narrative
+      
+      informationSource maps to the HITSP Information Source Content Module Specified in the C83
+      
+      narrative element referrs to narrative (human readable) style content. Usually a human readable version of the
+      encoded content.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="patientId" type="xs:string"/>
-        <xs:element name="effectiveDate" type="core:dateRange"/>
-        <xs:element name="role" type="provider:providerRole"/> 
-        <xs:element name="providertype" type="provider:providerType"/>
-        <xs:element name="name" type="core:actor"/>
+        <xs:element name="dateRange" type="core:dateRange"/>
+        <xs:element name="providerRoleCoded" type="provider:providerRole" minOccurs="0"/>
+        <xs:element name="providerRoleFreeText" type="xs:string" minOccurs="0"/>
+        <xs:element name="providerType" type="provider:providerType" minOccurs="0"/>
+        <xs:element name="providerEntity" type="core:actor"/>
+        <xs:element name="providerPatientId" type="xs:string" minOccurs="0"/>
+        <xs:element name="informationSource" type="core:informant" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="narrative" type="xs:string"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   
-  <xs:complexType name="providerType" abstract="true">
+  <xs:complexType name="providerType">
     <xs:annotation>
       <xs:documentation>
         Classifies providers according to the type of license or accreditation
@@ -126,7 +120,7 @@
     </xs:complexContent>
   </xs:complexType>
   
-  <xs:complexType name="providerRole" abstract="true">
+  <xs:complexType name="providerRole">
     <xs:annotation>
       <xs:documentation>
         Classifies providers according to the role they play in the healthcare of

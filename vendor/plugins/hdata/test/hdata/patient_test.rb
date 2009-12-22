@@ -8,9 +8,10 @@ module Hdata
       should "be able to serialize itself to hdata" do
         
         p = ::Patient.find_by_name("Joe Smith")
-        xml =  Builder::XmlMarkup.new
-        str = p.to_hdata(xml)
-        errors = VALIDATOR.validate(nil,str)
+        xml =  Builder::XmlMarkup.new(:indent=>2)
+        p.to_hdata(xml)
+        puts xml.target!
+        errors = VALIDATOR.validate(nil,xml.target!)
         puts errors.map{|e| e.error_message} if !errors.empty?
         assert errors.empty?
       end

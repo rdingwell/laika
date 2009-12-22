@@ -65,9 +65,9 @@ module Hdata
           lang.to_hdata(xml)
         end
         if registration_information.present?
-          xml.birthtime(registration_information.date_of_birth.to_utc) 
+          xml.birthtime(%{#{registration_information.date_of_birth.strftime("%F")}T#{ registration_information.date_of_birth.strftime("%T")}}) 
           registration_information.marital_status.try(:to_hdata,xml) 
-          registration_information.race.try(:to_hdata,xml) 
+         # registration_information.race.try(:to_hdata,xml) 
         end
          # do the gaurdian stuff here non gaurdian is placed elsewhere
           if support && support.contact_type.try(:code) == "GUARD"

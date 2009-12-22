@@ -14,40 +14,36 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
   elementFormDefault="qualified" 
   targetNamespace="http://projecthdata.org/hdata/schemas/2009/06/result" 
-  xmlns:results="http://projecthdata.org/hdata/schemas/2009/06/result" 
-  xmlns:resultst="http://projecthdata.org/hdata/schemas/2009/06/result_types" 
+  xmlns:result="http://projecthdata.org/hdata/schemas/2009/06/result" 
   xmlns:core="http://projecthdata.org/hdata/schemas/2009/06/core">
   
   <xs:import namespace="http://projecthdata.org/hdata/schemas/2009/06/core" schemaLocation="core_data_types.xsd"/>
-  <xs:import namespace="http://projecthdata.org/hdata/schemas/2009/06/result_types" schemaLocation="result_types.xsd"/>
+  <xs:include schemaLocation="result_types.xsd"/>
   
   <xs:element name="result">
     <xs:annotation>
       <xs:documentation>
         This section is used to describe test results/vital signs.
         
-        date: the date of the test
+        Element names map to HITSP Data Element Names in the HITSP C83, with the expcetion informationSource and narrative
         
-        resultType: the codevalue type of result
+        informationSource maps to the HITSP Information Source Content Module Specified in the C83
         
-        value:  abstract type that is primarily a placeholder for various types of results, such as unit/value,  blood pressure results ...
-        
-        interpretation: codedValue interpretation of the results
-        
-        referenceRange:  
+        narrative element referrs to narrative (human readable) style content. Usually a human readable version of the
+        encoded content.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="effectiveTime" type="core:dateRange"/>
-        <xs:element name="resultType" type="resultst:resultType"/>
-        <xs:element name="value" type="xs:anyType"/><!-- CCD CONF-417: SHALL be expressed using UCUM expression when physical quantity -->
-        <xs:element name="interpretation" type="core:codedValue" minOccurs="0"/>
-        <xs:element name="referenceRange" type="resultst:ResultReferenceRange" minOccurs="0" maxOccurs="unbounded"/>
-        <xs:element name="status" type="core:statusCode"/>
-        <xs:element name="interpretationCode" type="core:codedValue"/>
-        <xs:element name="informant" type="core:informant"/>
-        <xs:element name="text" type="xs:string"/>
+        <xs:element name="resultId" type="core:instanceIdentifier"/>
+        <xs:element name="resultDateTime" type="core:dateRange"/>
+        <xs:element name="resultType" type="result:resultType"/>
+        <xs:element name="resultStatus" type="core:statusCode"/>
+        <xs:element name="resultValue" type="xs:anyType"/><!-- CCD CONF-417: SHALL be expressed using UCUM expression when physical quantity -->
+        <xs:element name="resultInterpretation" type="core:codedValue" minOccurs="0"/>
+        <xs:element name="resultReferenceRange" type="result:resultReferenceRange" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="informationSource" type="core:informant" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="narrative" type="xs:string"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
