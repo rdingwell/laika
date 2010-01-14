@@ -152,6 +152,9 @@ module Hdata
      def to_hdata( xml, tag="address")
            #as an address is a complex type it is assumed that the builder will be passed in and the 
            #correct wrapping element will have been created already
+           # 
+           #this is ugly as all hell but is needed to ensure that an empty address tag is not added
+           if street_address_line_one || street_address_line_two || city || state || iso_country || postal_code
            xml.tag!(tag) do
              xml.tag!("core:streetAddress", street_address_line_one) if street_address_line_one.present?
              xml.tag!("core:streetAddress", street_address_line_two) if street_address_line_two.present?
@@ -160,6 +163,7 @@ module Hdata
              xml.tag!("core:zip", postal_code) if postal_code.present?
              xml.tag!("core:country", iso_country.code) if iso_country.present?
            end
+         end
        end
        
        
@@ -299,7 +303,7 @@ module Hdata
      end
    end
    
-   module Person   
+   module PersonLike   
     def self.to_hdata(person,xml)
       person.person_name.try(:to_hdata, xml,"core:name")
       person.address.try(:to_hdata, xml,"core:address")

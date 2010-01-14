@@ -95,8 +95,8 @@
                     </xs:restriction>
                 </xs:simpleType>
             </xs:attribute>
-            <xs:attribute name="codeSystem" type="xs:string" use="required" fixed="2.16.840.1.113883.1.11.20.1"/>
-            <xs:attribute name="codeSystemName" type="xs:string" fixed="AdvanceDirectiveStatusCode"/>
+            <xs:attribute name="codeSystem" type="xs:string" use="required" fixed="2.16.840.1.113883.6.96"/>
+            <xs:attribute name="codeSystemName" type="xs:string" fixed="SNOWMED CT"/>
             <xs:attribute name="version" use="optional" type="xs:string"/>
             <xs:attribute name="displayName" use="optional">
                 <xs:simpleType>

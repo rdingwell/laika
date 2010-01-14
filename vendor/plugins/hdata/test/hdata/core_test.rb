@@ -139,7 +139,7 @@ class CoreTest < Test::Unit::TestCase
        p = Patient.find_by_name("Joe Smith")
        
        doc = wrap_core_xml do |xml|
-         Hdata::Core::Person.to_hdata(p.registration_information,xml)
+         Hdata::Core::PersonLike.to_hdata(p.registration_information,xml)
         end
        
        # we already tested that the individual components serialize correctly 
